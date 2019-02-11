@@ -1,15 +1,13 @@
 "use strict";
 
-var log = require('torch');
-var fs = require("fs");
-var path = require("path");
-var Sequelize = require("sequelize");
-var config = require("../config/config.json").development
+let log = require('torch');
+let fs = require("fs");
+let path = require("path");
+let Sequelize = require("sequelize");
+let config = require("../config/config.json").development
 
-var sequelize = new Sequelize(config.database, config.username, config.password, config);
-var db = {};
-
-
+let sequelize = new Sequelize(config.database, config.username, config.password, config);
+let db = {};
 
 fs
     .readdirSync(__dirname)
@@ -17,7 +15,7 @@ fs
         return (file.indexOf(".") !== 0) && (file !== "index.js");
     })
     .forEach(function (file) {
-        var model = sequelize["import"](path.join(__dirname, file));
+        let model = sequelize["import"](path.join(__dirname, file));
         db[model.name] = model;
     });
 

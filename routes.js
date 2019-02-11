@@ -5,16 +5,17 @@ const Joi = require("joi")
 module.exports = [{
     method: 'GET',
     path: '/',
-    handler: controllers.users.get,
-   
+    handler: controllers.users.get
+
   },
   {
     method: 'POST',
-    path: '/',
-    handler: controllers.users.post,
-    options: {
-      auth: 'simple'
+    path: '/user/signup',
+    handler: controllers.users.signUp,
+  },
+  {
+    method: 'POST',
+    path: '/user/signin',
+    handler: controllers.users.signIn,
   }
-  }
-
 ];
