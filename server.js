@@ -4,7 +4,9 @@ const Hapi = require('hapi');
 const routes = require('./routes');
 const models = require('./models');
 const log = require('torch')
-
+const {
+    configureAuth
+} = require('./plugins/auth')
 const server = Hapi.server({
     port: 3000,
     host: 'localhost'
@@ -20,22 +22,8 @@ const initDb = function (cb) {
     }
 };
 
-server.route(routes)
 
 const init = async () => {
-
-    const validate = async function (decoded, request) {
-        const Users = Model.Users.findAll();
-        if (!Users[decoded.id]) {
-            return {
-                isValid: false
-            };
-        } else {
-            return {
-                isValid: true
-            };
-        }
-    };
 
     await server.register({
         plugin: require('hapi-pino'),
@@ -45,15 +33,9 @@ const init = async () => {
         }
     });
 
-    await server.register(require('hapi-auth-jwt2'));
+    await server.route(routes)
 
-    server.auth.strategy('jwt', 'jwt', {
-        key:privateKey,
-        validate: validate,
-        verifyOptions: {
-            algorithms: ['HS256']
-        } 
-    });
+    await configureAuth(server)
 
     await server.start();
 

@@ -9,10 +9,12 @@ module.exports = [{
     method: 'POST',
     path: '/user/login',
     handler: controllers.users.login,
+    config: { auth: false }
   },
   {
     method: 'POST',
     path: '/user/signup',
     handler: controllers.users.userSignup,
+    config: { auth: false }
   }
 ];

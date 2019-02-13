@@ -3,6 +3,7 @@
 const Model = require('../models');
 const Boom = require('boom')
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
 
 module.exports = {
     login: function (request, reply) {
@@ -17,7 +18,25 @@ module.exports = {
             }
         }).then(user => {
             if (bcrypt.compareSync(password, user.password)) {
-                return reply.response(user).code(200)
+
+                let {
+                    id,
+                    email,
+                    password
+                } = request.payload;
+
+                let token =  {token: jwt.sign({
+                    email,
+                    id,
+                    username
+                }, "JWT_KEY", {
+                    algorithm: 'HS256',
+                    expiresIn: '1h', 
+                })}
+
+                 token = JSON.stringify(token)
+                
+                return reply.response(token).code(200)
             } else {
                 return Boom.unauthorized('invalid password');
             }
