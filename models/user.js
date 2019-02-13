@@ -1,21 +1,27 @@
 'use strict';
+let log = require('torch')
 
 module.exports = (sequelize, DataTypes) => {
+  log.red(sequelize)
+  log.yellow(DataTypes)
   const User = sequelize.define('User', {
     username: DataTypes.STRING,
     email: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
-      validate: {
-        len: {
-          args: [6, 128],
-          msg: "Email address must be between 6 and 128 characters in length"
+      validate:{
+        notEmpty:{
+            args:true,
+            msg:"Email-id required"
         },
-        isEmail: {
-          msg: "Email address must be valid"
+        isEmail:{
+            args:true,
+            msg:'Valid email-id required'
         }
-      }
+    },
+   unique: { msg: 'Email address already in use!' }
+
     },
     password: {
       type: DataTypes.STRING,

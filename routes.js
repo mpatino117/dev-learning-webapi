@@ -1,6 +1,4 @@
 const controllers = require('./controllers');
-const log = require('torch')
-const Joi = require("joi")
 
 module.exports = [{
     method: 'GET',
