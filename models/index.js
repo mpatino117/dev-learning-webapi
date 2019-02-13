@@ -26,8 +26,6 @@ Object.keys(db).forEach(function (modelName) {
 });
 
 
-
-
 sequelize
     .authenticate()
     .then(() => {

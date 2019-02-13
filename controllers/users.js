@@ -1,48 +1,66 @@
 "use strict";
 
-let Model = require('../models');
-let log = require('torch')
-let hashPassword = require('../plugins/authentication')
-let Boom = require('boom')
+const Model = require('../models');
+const Boom = require('boom')
 const bcrypt = require('bcrypt');
 
-
-
 module.exports = {
-    get: function (request, reply) {
-        return Model.User.findAll()
+    login: function (request, reply) {
+        let {
+            email,
+            password
+        } = request.payload;
+
+        return Model.User.findOne({
+            where: {
+                email: email
+            }
+        }).then(user => {
+            if (bcrypt.compareSync(password, user.password)) {
+                return reply.response(user).code(200)
+            } else {
+                return Boom.unauthorized('invalid password');
+            }
+        })
     },
-    post: function (request, reply) {
-        return Model.User.create(request.payload)
-    },
-    signUp: function (request, reply) {
-        let {email, password} = request.payload;
+    userSignup: function (request, reply) {
+        let {
+            email,
+            password
+        } = request.payload;
 
-        // level 10 salt and encrypt
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(password, salt);
+        if (email == '' || password == '') {
+            return Boom.badRequest('email and password is required');
+        }
 
-        // var user = Model.User.findOne({where:{email: email}}).then(e => {return e})
-           
+        return Model.User.findOne({
+            where: {
+                email: email
+            }
+        }).then(user => {
+            if (user != null) {
+                return Boom.badRequest('email already taken');
+            } else {
 
-        //     log.yellow(user.then(rt => {
-        //         console.log(rt)
-        //     }
-        //     ))
+                // level 10 salt and encrypt
+                const salt = bcrypt.genSaltSync(10);
+                const hash = bcrypt.hashSync(password, salt);
+
                 return Model.User.create({
                     email: email,
                     username: email,
                     password: hash
                 }).then(user => {
-                    return h.response(user).code(201)
+                    return reply.response(user).code(201)
                 })
-           
-
-
+            }
+        })
 
     },
-    signIn: function (request, reply) {
-
+    allUsers: function (request, reply) {
+        return Model.User.findAll().then(user => {
+            return reply.response(user).code(201)
+        })
     }
 
 }

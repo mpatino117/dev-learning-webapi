@@ -2,8 +2,7 @@
 let log = require('torch')
 
 module.exports = (sequelize, DataTypes) => {
-  log.red(sequelize)
-  log.yellow(DataTypes)
+
   const User = sequelize.define('User', {
     username: DataTypes.STRING,
     email: {

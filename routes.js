@@ -2,18 +2,17 @@ const controllers = require('./controllers');
 
 module.exports = [{
     method: 'GET',
-    path: '/',
-    handler: controllers.users.get
-
+    path: '/user',
+    handler: controllers.users.allUsers
+  },
+  {
+    method: 'POST',
+    path: '/user/login',
+    handler: controllers.users.login,
   },
   {
     method: 'POST',
     path: '/user/signup',
-    handler: controllers.users.signUp,
-  },
-  {
-    method: 'POST',
-    path: '/user/signin',
-    handler: controllers.users.signIn,
+    handler: controllers.users.userSignup,
   }
 ];
