@@ -31,7 +31,7 @@ module.exports = {
                     username
                 }, "JWT_KEY", {
                     algorithm: 'HS256',
-                    expiresIn: '1h', 
+                    expiresIn: '24h', 
                 })}
 
                  token = JSON.stringify(token)

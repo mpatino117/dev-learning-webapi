@@ -3,7 +3,8 @@ const controllers = require('./controllers');
 module.exports = [{
     method: 'GET',
     path: '/user',
-    handler: controllers.users.allUsers
+    handler: controllers.users.allUsers,
+    config: { auth: false }
   },
   {
     method: 'POST',

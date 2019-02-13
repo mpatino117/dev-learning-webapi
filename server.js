@@ -9,7 +9,12 @@ const {
 } = require('./plugins/auth')
 const server = Hapi.server({
     port: 3000,
-    host: 'localhost'
+    host: 'localhost',
+    routes: {
+        cors: {
+          credentials: true
+        }
+      }
 });
 
 const privateKey = 'BbZJjyoXAdr8BUZuiKKARWimKfrSmQ6fv8kZ7OFfc';
