@@ -1,31 +1,23 @@
 'use strict';
 
 const Hapi = require('hapi');
-const routes = require('./routes');
-const models = require('./models');
 const log = require('torch')
-const {
-    configureAuth
-} = require('./plugins/auth')
+
+// sets enviroment variables
+require('dotenv').config()
+
+const routes = require('./routes');
+const {configureAuth} = require('./plugins/auth')
+
 const server = Hapi.server({
-    port: 3000,
-    host: 'localhost',
+    port: process.env.API_PORT || 3000,
+    host: process.env.API_HOST ||'localhost',
     routes: {
         cors: {
-          credentials: true
+          credentials: false
         }
       }
 });
-
-const privateKey = 'BbZJjyoXAdr8BUZuiKKARWimKfrSmQ6fv8kZ7OFfc';
-
-const initDb = function (cb) {
-    let sequelize = models.sequelize;
-    if (sequelize.getDialect() === 'postgres' &&
-        (!sequelize.options.storage || sequelize.options.storage === ':memory:')) {} else {
-        cb();
-    }
-};
 
 
 const init = async () => {
@@ -38,9 +30,10 @@ const init = async () => {
         }
     });
 
-    await server.route(routes)
-
+    
     await configureAuth(server)
+
+    await server.route(routes)
 
     await server.start();
 

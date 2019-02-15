@@ -5,6 +5,9 @@ const Boom = require('boom')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 
+const JWT_KEY = process.env.JWT_KEY
+
+
 module.exports = {
     login: function (request, reply) {
         let {
@@ -22,14 +25,14 @@ module.exports = {
                 let {
                     id,
                     email,
-                    password
-                } = request.payload;
+                    username
+                } = user;
 
                 let token =  {token: jwt.sign({
                     email,
                     id,
                     username
-                }, "JWT_KEY", {
+                }, JWT_KEY, {
                     algorithm: 'HS256',
                     expiresIn: '24h', 
                 })}

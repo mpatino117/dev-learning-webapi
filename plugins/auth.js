@@ -1,26 +1,32 @@
+const jwtPlugin = require('hapi-auth-jwt2')
+const log = require('torch')
+const Model = require("../models")
 
-
-// auth.js
-const jwtPlugin = require('hapi-auth-jwt2').plugin
-// This would be in an environment variable in production
-const JWT_KEY = 'NeverShareYourSecret'
-
-var validate = function (credentials) {
-  // Run any checks here to confirm we want to grant these credentials access
-  return {
-    isValid: true,
-    credentials // request.auth.credentials
-  }
-}
+const JWT_KEY = process.env.JWT_KEY
 
 exports.configureAuth = async (server) => {
   await server.register(jwtPlugin)
-  server.auth.strategy('admin', 'jwt', {
+  server.auth.strategy('jwt', 'jwt', {
     key: JWT_KEY,
-    validate,
-    verifyOptions: { algorithms: [ 'HS256' ] }
+    verifyOptions: {
+      algorithms: ['HS256']
+    },
+    validate: async (decoded, request) => {
+      try {
+        return {
+          isValid: true,
+          credentials: await Model.User.findById(decoded.id)
+        };
+      } catch (error) {
+            log.red(error)
+          return {
+          isValid: false
+        };
+      }
+
+    }
   })
 
-  // Default all routes to require JWT and opt out for public routes
-  server.auth.default('admin')
+
+  server.auth.default('jwt')
 }

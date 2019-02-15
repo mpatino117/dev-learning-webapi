@@ -4,7 +4,7 @@ module.exports = [{
     method: 'GET',
     path: '/user',
     handler: controllers.users.allUsers,
-    config: { auth: false }
+    config: { auth: 'jwt' }
   },
   {
     method: 'POST',
