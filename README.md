@@ -68,7 +68,7 @@ This Web API has 3 routes setup to start:
         
     ```
         {
-	        "email":"mpatino117@gmail.com",
+	        "email":"somedue@gmail.com",
 	        "password":"password"
         }
     ```
