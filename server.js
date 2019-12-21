@@ -1,13 +1,26 @@
 'use strict';
 
 const Hapi = require('hapi');
-const log = require('torch')
 
-// sets enviroment variables
 require('dotenv').config()
 
 const routes = require('./routes');
 const {configureAuth} = require('./plugins/auth')
+
+const environment = process.env.NODE_ENV || 'development';
+const configuration = require('./knexfile')[environment];
+const database = require('knex')(configuration);
+
+
+
+const assertDatabaseConnection = () => {
+    return database.raw('select 1+1 as result')
+        .catch((err) => {
+            console.log('[Fatal] Failed to establish connection to database! Exiting...');
+            console.log(err);
+            process.exit(1);
+        });
+}
 
 const server = Hapi.server({
     port: process.env.API_PORT || 3000,
@@ -21,7 +34,7 @@ const server = Hapi.server({
 
 
 const init = async () => {
-
+    await assertDatabaseConnection()
     await server.register({
         plugin: require('hapi-pino'),
         options: {
@@ -30,7 +43,7 @@ const init = async () => {
         }
     });
 
-    
+
     await configureAuth(server)
 
     await server.route(routes)

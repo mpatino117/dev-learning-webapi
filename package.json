@@ -5,7 +5,8 @@
   "main": "routes.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "nodemon server.js",
+    "local-pg": "docker start productmana-pg || docker run --name productmana-pg -e POSTGRES_DB=productmana-pg-dev -e POSTGRES_USER=productmana -e POSTGRES_PASSWORD=password -d -p 5432:5432 postgres:10.7"
   },
   "repository": {
     "type": "git",
@@ -21,7 +22,8 @@
     "bcrypt": "^3.0.4",
     "boom": "^7.3.0",
     "config": "^3.0.1",
-    "hapi": "^18.0.0",
+    "dotenv": "^8.2.0",
+    "hapi": "^18.1.0",
     "hapi-auth-jwt2": "^8.3.0",
     "hapi-pino": "^5.2.0",
     "hapi-swagger": "^9.3.0",
@@ -29,12 +31,15 @@
     "inert": "^5.1.2",
     "joi": "^14.3.1",
     "jsonwebtoken": "^8.4.0",
+    "knex": "^0.20.4",
+    "nodemon": "^2.0.2",
     "pg": "^7.8.0",
     "pg-hstore": "^2.3.2",
     "require-directory": "^2.1.1",
     "sequelize": "^4.42.0",
     "sequelize-cli": "^5.4.0",
     "torch": "^0.2.7",
+    "validator": "^12.1.0",
     "vision": "^5.4.4"
   }
 }

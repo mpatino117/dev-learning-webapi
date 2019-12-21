@@ -1,6 +1,6 @@
 "use strict";
 
-const Model = require('../models');
+const database = require("../../database");
 const Boom = require('boom')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
@@ -34,11 +34,11 @@ module.exports = {
                     username
                 }, JWT_KEY, {
                     algorithm: 'HS256',
-                    expiresIn: '24h', 
+                    expiresIn: '24h',
                 })}
 
                  token = JSON.stringify(token)
-                
+
                 return reply.response(token).code(200)
             } else {
                 return Boom.unauthorized('invalid password');
