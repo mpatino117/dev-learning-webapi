@@ -1,14 +1,14 @@
 'use strict';
 
-const Hapi = require('hapi');
-
 require('dotenv').config()
 
+const Hapi = require('hapi');
+const log = require('torch')
 const routes = require('./routes');
 const {configureAuth} = require('./plugins/auth')
 
 const environment = process.env.NODE_ENV || 'development';
-const configuration = require('./knexfile')[environment];
+const configuration = require('../knexfile')[environment];
 const database = require('knex')(configuration);
 
 

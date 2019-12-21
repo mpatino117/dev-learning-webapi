@@ -1,12 +1,13 @@
-#Dev Learning Web API
+# ProductMana API
 
 This application is built on Hapi.js a Node.js framework.
 
-####Tech Stack
+#### Tech Stack
+
 - Hapi.js
 - JWT Auth
 - Postgres DB
-- Sequelize
+- Knex
   ... update with time
 
 -------
@@ -18,12 +19,13 @@ Configurations you must add **.env** file if you do not have one and add the fol
 ```
 API_HOST=127.0.0.1
 API_PORT=3000
-JWT_KEY='devlearning'
-
-DB_USERNAME=devlearner
+JWT_KEY='3ge7bBLuE9t29LJZnAyEHFgZip4DgEhfJy7juAh8rBDqppG7W'
+DB_USERNAME=productmana
 DB_PASSWORD=password
-DB_NAME=devlearning
+DB_NAME=productmana-pg-dev
 DB_HOST=127.0.0.1
+DATABASE_URL=postgresql://localhost:5432/productmana-pg-dev
+NODE_ENV=development
 ```
 
 Start project:
@@ -31,26 +33,30 @@ Start project:
 
 ```
 
-Install modules
+// Install modules
 
-Run:
 npm install 
 
-Once DB is created and enviroment variables are setup run the folloing command, it will add mock data to the database.
+// Install Postgres DB using Docker
 
-Run:
-node_modules/.bin/sequelize db:migrate
+npm run local-pg
 
+// Run DB migrations
 
-Once everything is good with DB and node modules. You can start the API,
+npm run migrate-pg
 
-Run:
+// Run DB seed data
 
-npm run start
+npm run seed-pg
 
+// run enviroment in dev
 
+npm run dev 
 
 ```
+
+
+
 
 ---
 

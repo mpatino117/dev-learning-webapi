@@ -1,12 +1,16 @@
 "use strict";
 
-const database = require("../../database");
+const db = require("../../db/db");
 const Boom = require('boom')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 
 const JWT_KEY = process.env.JWT_KEY
 
+// const user = model({
+//     name: "users",
+//     tableName: "tbl_users",
+//    });
 
 module.exports = {
     login: function (request, reply) {
@@ -15,13 +19,11 @@ module.exports = {
             password
         } = request.payload;
 
-        return Model.User.findOne({
-            where: {
+        return db('users').where({
                 email: email
-            }
         }).then(user => {
+             user = user[0]
             if (bcrypt.compareSync(password, user.password)) {
-
                 let {
                     id,
                     email,
@@ -55,12 +57,11 @@ module.exports = {
             return Boom.badRequest('email and password is required');
         }
 
-        return Model.User.findOne({
-            where: {
+        return db('users').where({
                 email: email
-            }
         }).then(user => {
-            if (user != null) {
+
+            if (!user && !user[0]) {
                 return Boom.badRequest('email already taken');
             } else {
 
@@ -68,20 +69,20 @@ module.exports = {
                 const salt = bcrypt.genSaltSync(10);
                 const hash = bcrypt.hashSync(password, salt);
 
-                return Model.User.create({
+                return db('users').insert({
                     email: email,
                     username: email,
                     password: hash
                 }).then(user => {
-                    return reply.response(user).code(201)
+                    return reply.response(JSON.stringify(user[0])).code(201)
                 })
             }
         })
 
     },
     allUsers: function (request, reply) {
-        return Model.User.findAll().then(user => {
-            return reply.response(user).code(201)
+        return db('users').select().then(user => {
+            return reply.response(JSON.stringify(user)).code(201)
         })
     }
 

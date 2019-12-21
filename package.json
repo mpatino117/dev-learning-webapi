@@ -4,8 +4,11 @@
   "description": "",
   "main": "routes.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js",
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "migrate-pg": "knex migrate:latest",
+    "unmigrate-pg": "knex migrate:rollback",
+    "seed-pg": "knex seed:run",
     "local-pg": "docker start productmana-pg || docker run --name productmana-pg -e POSTGRES_DB=productmana-pg-dev -e POSTGRES_USER=productmana -e POSTGRES_PASSWORD=password -d -p 5432:5432 postgres:10.7"
   },
   "repository": {
@@ -41,5 +44,8 @@
     "torch": "^0.2.7",
     "validator": "^12.1.0",
     "vision": "^5.4.4"
+  },
+  "devDependencies": {
+    "prettier": "^1.19.1"
   }
 }

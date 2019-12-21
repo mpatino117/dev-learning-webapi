@@ -1,6 +1,6 @@
 const jwtPlugin = require('hapi-auth-jwt2')
 const log = require('torch')
-const Model = require("../models")
+const db = require("../db/db")
 
 const JWT_KEY = process.env.JWT_KEY
 
@@ -12,13 +12,14 @@ exports.configureAuth = async (server) => {
       algorithms: ['HS256']
     },
     validate: async (decoded, request) => {
+      let user = await db('users').where({id: decoded.id})
+      console.log(user[0])
       try {
         return {
           isValid: true,
-          credentials: await Model.User.findById(decoded.id)
+          credentials: user[0]
         };
       } catch (error) {
-            log.red(error)
           return {
           isValid: false
         };

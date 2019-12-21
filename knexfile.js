@@ -1,21 +1,22 @@
-const { DB_NAME, DB_USERNAME, DB_PASSWORD } = process.env;
-// database: DB_NAME,
-// user: DB_USERNAME,
-// password: DB_PASSWORD,
+
+require('dotenv').config()
+
+const { DB_NAME, DB_USERNAME, DB_PASSWORD, DATABASE_URL } = process.env;
+
 
 module.exports = {
   development: {
-    client: "postgresql",
+    client: "pg",
     connection: {
       database: DB_NAME,
       user: DB_USERNAME,
       password: DB_PASSWORD
     },
     migrations: {
-      directory: __dirname + "/knex/migrations"
+      directory: __dirname + "src/db/migrations"
     },
     seeds: {
-      directory: __dirname + "/knex/seeds"
+      directory: __dirname + "src/db/seeds"
     }
   },
   staging: {
@@ -30,10 +31,10 @@ module.exports = {
       max: 10
     },
     migrations: {
-      directory: __dirname + "/knex/migrations"
+      directory: __dirname + "src/db/migrations"
     },
     seeds: {
-      directory: __dirname + "/knex/seeds"
+      directory: __dirname + "src/db/seeds"
     }
   },
   production: {
@@ -48,10 +49,10 @@ module.exports = {
       max: 10
     },
     migrations: {
-      directory: __dirname + "/knex/migrations"
+      directory: __dirname + "src/db/migrations"
     },
     seeds: {
-      directory: __dirname + "/knex/seeds"
+      directory: __dirname + "src/db/seeds"
     }
   }
 };
