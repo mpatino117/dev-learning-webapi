@@ -1,0 +1,11 @@
+/build/
+/config/
+/dist/
+/test/unit/coverage/
+/www/
+platforms
+plugins
+webpack
+static
+hooks
+node_modules
